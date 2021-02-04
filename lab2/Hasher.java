@@ -6,14 +6,13 @@ import java.security.NoSuchAlgorithmException;
 public class Hasher {
   private static MessageDigest md;
 
-  public static String hash(String input, String algorithm) {
+  public static String hash(byte[] input, String algorithm) {
     String output = null;
-    byte[] inputBytes = input.getBytes();
 
     try {
       md = MessageDigest.getInstance(algorithm);
       // feed in the input byte[] to md
-      md.update(inputBytes);
+      md.update(input);
       // add salt
       md.update(Salt.generate());
       // generate hash output

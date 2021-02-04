@@ -1,17 +1,40 @@
 package lab2;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.sun.tools.javac.Main;
+
 public class Lab2 {
   public static void main(String[] args) {
-    String password = "password";
-    System.out.println("Password: " + password);
+    
+  }
 
-    String hashMD5 = Hasher.hash(password, "MD5");
-    System.out.println("MD5: " + hashMD5);
+  static void test1() {
+    try {
+      Block genesis = new Block("sample_data1", "0");
+      Blockchain.nextBlock(genesis);
 
-    String hashSHA256 = Hasher.hash(password, "SHA-256");
-    System.out.println("SHA256: " + hashSHA256);
+      Block b1 = new Block("sample_data2", Blockchain.getChain().getLast().getHash());
+      Blockchain.nextBlock(b1);
+    } catch (Exception e) {
+      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+    } finally {
+      Blockchain.distribute();
+    }
+  }
 
-    String hashSHA512 = Hasher.hash(password, "SHA-512");
-    System.out.println("SHA512: " + hashSHA512);
+  static void test2() {
+    try {
+      String previousHash = Blockchain.getChain().getLast().getHash();
+      System.out.println("Previous hash: " + previousHash);
+
+      Block b2 = new Block("sample_data3", previousHash);
+      Blockchain.nextBlock(b2);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      Blockchain.distribute();
+    }
   }
 }
